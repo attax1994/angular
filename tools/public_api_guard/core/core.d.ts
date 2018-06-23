@@ -86,6 +86,7 @@ export declare class Compiler {
     compileModuleAndAllComponentsSync<T>(moduleType: Type<T>): ModuleWithComponentFactories<T>;
     compileModuleAsync<T>(moduleType: Type<T>): Promise<NgModuleFactory<T>>;
     compileModuleSync<T>(moduleType: Type<T>): NgModuleFactory<T>;
+    getModuleId(moduleType: Type<any>): string | undefined;
 }
 
 /** @experimental */
@@ -143,6 +144,11 @@ export declare abstract class ComponentRef<C> {
     abstract onDestroy(callback: Function): void;
 }
 
+/** @experimental */
+export interface ConstructorSansProvider {
+    deps?: any[];
+}
+
 export declare const ContentChild: ContentChildDecorator;
 
 export interface ContentChildDecorator {
@@ -168,7 +174,7 @@ export interface ContentChildrenDecorator {
 }
 
 /** @experimental */
-export declare function createInjector(defType: any, parent?: Injector | null): Injector;
+export declare function createInjector(defType: any, parent?: Injector | null, additionalProviders?: StaticProvider[] | null): Injector;
 
 /** @experimental */
 export declare function createPlatform(injector: Injector): PlatformRef;
@@ -462,10 +468,10 @@ export interface KeyValueChanges<K, V> {
 }
 
 export interface KeyValueDiffer<K, V> {
-    diff(object: Map<K, V>): KeyValueChanges<K, V>;
+    diff(object: Map<K, V>): KeyValueChanges<K, V> | null;
     diff(object: {
         [key: string]: V;
-    }): KeyValueChanges<string, V>;
+    }): KeyValueChanges<string, V> | null;
 }
 
 export interface KeyValueDifferFactory {
@@ -609,7 +615,7 @@ export interface Predicate<T> {
     (value: T): boolean;
 }
 
-export declare type Provider = TypeProvider | ValueProvider | ClassProvider | ExistingProvider | FactoryProvider | any[];
+export declare type Provider = TypeProvider | ValueProvider | ClassProvider | ConstructorProvider | ExistingProvider | FactoryProvider | any[];
 
 export declare abstract class Query {
 }

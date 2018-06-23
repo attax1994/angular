@@ -21,6 +21,103 @@ describe('compiler compliance', () => {
   });
 
   describe('elements', () => {
+    it('should handle SVG', () => {
+      const files = {
+        app: {
+          'spec.ts': `
+              import {Component, NgModule} from '@angular/core';
+
+              @Component({
+                selector: 'my-component',
+                template: \`<div class="my-app" title="Hello"><svg><circle cx="20" cy="30" r="50"/></svg><p>test</p></div>\`
+              })
+              export class MyComponent {}
+
+              @NgModule({declarations: [MyComponent]})
+              export class MyModule {}
+          `
+        }
+      };
+
+      // The factory should look like this:
+      const factory = 'factory: function MyComponent_Factory() { return new MyComponent(); }';
+
+      // The template should look like this (where IDENT is a wild card for an identifier):
+      const template = `
+        const $c1$ = ['class', 'my-app', 'title', 'Hello'];
+        const $c2$ = ['cx', '20', 'cy', '30', 'r', '50'];
+        …
+        template: function MyComponent_Template(rf: IDENT, ctx: IDENT) {
+          if (rf & 1) {
+            $r3$.ɵE(0, 'div', $c1$);
+            $r3$.ɵNS();
+            $r3$.ɵE(1, 'svg');
+            $r3$.ɵEe(2, 'circle', $c2$);
+            $r3$.ɵe();
+            $r3$.ɵNH();
+            $r3$.ɵE(3, 'p');
+            $r3$.ɵT(4, 'test');
+            $r3$.ɵe();
+            $r3$.ɵe();
+          }
+        }
+      `;
+
+
+      const result = compile(files, angularFiles);
+
+      expectEmit(result.source, factory, 'Incorrect factory');
+      expectEmit(result.source, template, 'Incorrect template');
+    });
+
+    it('should handle MathML', () => {
+      const files = {
+        app: {
+          'spec.ts': `
+              import {Component, NgModule} from '@angular/core';
+
+              @Component({
+                selector: 'my-component',
+                template: \`<div class="my-app" title="Hello"><math><infinity/></math><p>test</p></div>\`
+              })
+              export class MyComponent {}
+
+              @NgModule({declarations: [MyComponent]})
+              export class MyModule {}
+          `
+        }
+      };
+
+      // The factory should look like this:
+      const factory = 'factory: function MyComponent_Factory() { return new MyComponent(); }';
+
+      // The template should look like this (where IDENT is a wild card for an identifier):
+      const template = `
+        const $c1$ = ['class', 'my-app', 'title', 'Hello'];
+        …
+        template: function MyComponent_Template(rf: IDENT, ctx: IDENT) {
+          if (rf & 1) {
+            $r3$.ɵE(0, 'div', $c1$);
+            $r3$.ɵNM();
+            $r3$.ɵE(1, 'math');
+            $r3$.ɵEe(2, 'infinity');
+            $r3$.ɵe();
+            $r3$.ɵNH();
+            $r3$.ɵE(3, 'p');
+            $r3$.ɵT(4, 'test');
+            $r3$.ɵe();
+            $r3$.ɵe();
+          }
+        }
+      `;
+
+
+      const result = compile(files, angularFiles);
+
+      expectEmit(result.source, factory, 'Incorrect factory');
+      expectEmit(result.source, template, 'Incorrect template');
+    });
+
     it('should translate DOM structure', () => {
       const files = {
         app: {
@@ -66,6 +163,53 @@ describe('compiler compliance', () => {
       expectEmit(result.source, template, 'Incorrect template');
     });
 
+    // TODO(https://github.com/angular/angular/issues/24426): We need to support the parser actually
+    // building the proper attributes based off of xmlns atttribuates.
+    xit('should support namspaced attributes', () => {
+      const files = {
+        app: {
+          'spec.ts': `
+                import {Component, NgModule} from '@angular/core';
+
+                @Component({
+                  selector: 'my-component',
+                  template: \`<div xmlns:foo="http://someuri/foo" class="my-app" foo:bar="baz" title="Hello" foo:qux="quacks">Hello <b>World</b>!</div>\`
+                })
+                export class MyComponent {}
+
+                @NgModule({declarations: [MyComponent]})
+                export class MyModule {}
+            `
+        }
+      };
+
+      // The factory should look like this:
+      const factory = 'factory: function MyComponent_Factory() { return new MyComponent(); }';
+
+      // The template should look like this (where IDENT is a wild card for an identifier):
+      const template = `
+          const $c1$ = ['class', 'my-app', 0, 'http://someuri/foo', 'foo:bar', 'baz', 'title', 'Hello', 0, 'http://someuri/foo', 'foo:qux', 'quacks'];
+          …
+          template: function MyComponent_Template(rf: IDENT, ctx: IDENT) {
+            if (rf & 1) {
+              $r3$.ɵE(0, 'div', $e0_attrs$);
+              $r3$.ɵT(1, 'Hello ');
+              $r3$.ɵE(2, 'b');
+              $r3$.ɵT(3, 'World');
+              $r3$.ɵe();
+              $r3$.ɵT(4, '!');
+              $r3$.ɵe();
+            }
+          }
+        `;
+
+
+      const result = compile(files, angularFiles);
+
+      expectEmit(result.source, factory, 'Incorrect factory');
+      expectEmit(result.source, template, 'Incorrect template');
+    });
+
     it('should bind to element properties', () => {
       const files = {
         app: {
@@ -88,14 +232,61 @@ describe('compiler compliance', () => {
 
       const factory = 'factory: function MyComponent_Factory() { return new MyComponent(); }';
       const template = `
-        …
         template: function MyComponent_Template(rf: IDENT, ctx: IDENT) {
           if (rf & 1) {
-            $r3$.ɵE(0, 'div');
-            $r3$.ɵe();
+            $r3$.ɵEe(0, 'div');
           }
           if (rf & 2) {
             $r3$.ɵp(0, 'id', $r3$.ɵb(ctx.id));
+          }
+        }
+      `;
+
+
+      const result = compile(files, angularFiles);
+
+      expectEmit(result.source, factory, 'Incorrect factory');
+      expectEmit(result.source, template, 'Incorrect template');
+    });
+
+    it('should reserve slots for pure functions', () => {
+      const files = {
+        app: {
+          'spec.ts': `
+              import {Component, NgModule} from '@angular/core';
+
+              @Component({
+                selector: 'my-component',
+                template: \`<div
+                  [ternary]="cond ? [a] : [0]"
+                  [pipe]="value | pipe:1:2"
+                  [and]="cond && [b]"
+                  [or]="cond || [c]"
+                ></div>\`
+              })
+              export class MyComponent {
+                id = 'one';
+              }
+
+              @NgModule({declarations: [MyComponent]})
+              export class MyModule {}
+          `
+        }
+      };
+
+      const factory = 'factory: function MyComponent_Factory() { return new MyComponent(); }';
+      const template = `
+        template: function MyComponent_Template(rf: IDENT, ctx: IDENT) {
+          if (rf & 1) {
+            $r3$.ɵEe(0, 'div');
+            $r3$.ɵPp(1,'pipe');
+            $r3$.ɵrS(10);
+          }
+          if (rf & 2) {
+            $r3$.ɵp(0, 'ternary', $r3$.ɵb((ctx.cond ? $r3$.ɵf1(2, _c0, ctx.a): _c1)));
+            $r3$.ɵp(0, 'pipe', $r3$.ɵb($r3$.ɵpb3(6, 1, ctx.value, 1, 2)));
+            $r3$.ɵp(0, 'and', $r3$.ɵb((ctx.cond && $r3$.ɵf1(4, _c0, ctx.b))));
+            $r3$.ɵp(0, 'or', $r3$.ɵb((ctx.cond || $r3$.ɵf1(6, _c0, ctx.c))));
           }
         }
       `;
@@ -130,11 +321,9 @@ describe('compiler compliance', () => {
 
       const factory = 'factory: function MyComponent_Factory() { return new MyComponent(); }';
       const template = `
-        …
         template: function MyComponent_Template(rf: IDENT, ctx: IDENT) {
           if (rf & 1) {
-            $r3$.ɵE(0, 'div');
-            $r3$.ɵe();
+            $r3$.ɵEe(0, 'div');
           }
           if (rf & 2) {
             $r3$.ɵkn(0, 'error', $r3$.ɵb(ctx.error));
@@ -206,8 +395,7 @@ describe('compiler compliance', () => {
           factory: function MyComponent_Factory() { return new MyComponent(); },
           template: function MyComponent_Template(rf: IDENT, ctx: IDENT) {
             if (rf & 1) {
-              $r3$.ɵE(0, 'child', $c1$);
-              $r3$.ɵe();
+              $r3$.ɵEe(0, 'child', $c1$);
               $r3$.ɵT(1, '!');
             }
           },
@@ -291,7 +479,7 @@ describe('compiler compliance', () => {
           factory: function HostBindingDir_Factory() { return new HostBindingDir(); },
           hostBindings: function HostBindingDir_HostBindings(
               dirIndex: $number$, elIndex: $number$) {
-            $r3$.ɵp(elIndex, 'id', $r3$.ɵb($r3$.ɵld(dirIndex).dirId));
+            $r3$.ɵp(elIndex, 'id', $r3$.ɵb($r3$.ɵd(dirIndex).dirId));
           }
         });
       `;
@@ -413,11 +601,11 @@ describe('compiler compliance', () => {
             factory: function MyApp_Factory() { return new MyApp(); },
             template: function MyApp_Template(rf: $RenderFlags$, ctx: $MyApp$) {
               if (rf & 1) {
-                $r3$.ɵE(0, 'my-comp');
-                $r3$.ɵe();
+                $r3$.ɵEe(0, 'my-comp');
+                $r3$.ɵrS(2);
               }
               if (rf & 2) {
-                $r3$.ɵp(0, 'names', $r3$.ɵb($r3$.ɵf1($e0_ff$, ctx.customName)));
+                $r3$.ɵp(0, 'names', $r3$.ɵb($r3$.ɵf1(2, $e0_ff$, ctx.customName)));
               }
             },
            directives: [MyComp]
@@ -492,13 +680,13 @@ describe('compiler compliance', () => {
             factory: function MyApp_Factory() { return new MyApp(); },
             template: function MyApp_Template(rf: $RenderFlags$, ctx: $MyApp$) {
               if (rf & 1) {
-                $r3$.ɵE(0, 'my-comp');
-                $r3$.ɵe();
+                $r3$.ɵEe(0, 'my-comp');
+                $r3$.ɵrS(10);
               }
               if (rf & 2) {
                 $r3$.ɵp(
                     0, 'names',
-                    $r3$.ɵb($r3$.ɵfV($e0_ff$, ctx.n0, ctx.n1, ctx.n2, ctx.n3, ctx.n4, ctx.n5, ctx.n6, ctx.n7, ctx.n8)));
+                    $r3$.ɵb($r3$.ɵfV(10, $e0_ff$, [ctx.n0, ctx.n1, ctx.n2, ctx.n3, ctx.n4, ctx.n5, ctx.n6, ctx.n7, ctx.n8])));
               }
             },
             directives: [MyComp]
@@ -553,11 +741,11 @@ describe('compiler compliance', () => {
             factory: function MyApp_Factory() { return new MyApp(); },
             template: function MyApp_Template(rf: $RenderFlags$, ctx: $MyApp$) {
               if (rf & 1) {
-                $r3$.ɵE(0, 'object-comp');
-                $r3$.ɵe();
+                $r3$.ɵEe(0, 'object-comp');
+                $r3$.ɵrS(2);
               }
               if (rf & 2) {
-                $r3$.ɵp(0, 'config', $r3$.ɵb($r3$.ɵf1($e0_ff$, ctx.name)));
+                $r3$.ɵp(0, 'config', $r3$.ɵb($r3$.ɵf1(2, $e0_ff$, ctx.name)));
               }
             },
             directives: [ObjectComp]
@@ -618,14 +806,13 @@ describe('compiler compliance', () => {
             factory: function MyApp_Factory() { return new MyApp(); },
             template: function MyApp_Template(rf: $RenderFlags$, ctx: $MyApp$) {
               if (rf & 1) {
-                $r3$.ɵE(0, 'nested-comp');
-                $r3$.ɵe();
+                $r3$.ɵEe(0, 'nested-comp');
+                $r3$.ɵrS(7);
               }
               if (rf & 2) {
                 $r3$.ɵp(
                     0, 'config',
-                    $r3$.ɵb($r3$.ɵf2(
-                        $e0_ff_2$, ctx.name, $r3$.ɵf1($e0_ff_1$, $r3$.ɵf1($e0_ff$, ctx.duration)))));
+                    $r3$.ɵb($r3$.ɵf2(7, $e0_ff_2$, ctx.name, $r3$.ɵf1(4, $e0_ff_1$, $r3$.ɵf1(2, $e0_ff$, ctx.duration)))));
               }
             },
             directives: [NestedComp]
@@ -763,8 +950,7 @@ describe('compiler compliance', () => {
               var $tmp$: $any$;
               if (rf & 1) {
                 $r3$.ɵQ(0, SomeDirective, true);
-                $r3$.ɵE(1, 'div', $e0_attrs$);
-                $r3$.ɵe();
+                $r3$.ɵEe(1, 'div', $e0_attrs$);
               }
               if (rf & 2) {
                 ($r3$.ɵqR(($tmp$ = $r3$.ɵld(0))) && (ctx.someDir = $tmp$.first));
@@ -823,7 +1009,7 @@ describe('compiler compliance', () => {
             hostBindings: function ContentQueryComponent_HostBindings(
                 dirIndex: $number$, elIndex: $number$) {
               var $tmp$: $any$;
-              ($r3$.ɵqR(($tmp$ = $r3$.ɵld(dirIndex)[1])) && ($r3$.ɵld(dirIndex)[0].someDir = $tmp$.first));
+              ($r3$.ɵqR(($tmp$ = $r3$.ɵd(dirIndex)[1])) && ($r3$.ɵd(dirIndex)[0].someDir = $tmp$.first));
             },
             template: function ContentQueryComponent_Template(
                 rf: $RenderFlags$, ctx: $ContentQueryComponent$) {
@@ -870,7 +1056,7 @@ describe('compiler compliance', () => {
 
               @Component({
                 selector: 'my-app',
-                template: '{{name | myPipe:size | myPurePipe:size }}<p>{{ name | myPurePipe:size }}</p>'
+                template: '{{name | myPipe:size | myPurePipe:size }}<p>{{ name | myPipe:1:2:3:4:5 }}</p>'
               })
               export class MyApp {
                 name = 'World';
@@ -898,7 +1084,10 @@ describe('compiler compliance', () => {
             });`;
 
         const MyAppDefinition = `
-            …
+            const $c0$ = ($a0$: any) => {
+              return [$a0$, 1, 2, 3, 4, 5];
+            };
+            // ...
             static ngComponentDef = $r3$.ɵdefineComponent({
               type: MyApp,
               selectors: [['my-app']],
@@ -910,12 +1099,13 @@ describe('compiler compliance', () => {
                   $r3$.ɵPp(2, 'myPipe');
                   $r3$.ɵE(3, 'p');
                   $r3$.ɵT(4);
-                  $r3$.ɵPp(5, 'myPurePipe');
+                  $r3$.ɵPp(5, 'myPipe');
                   $r3$.ɵe();
+                  $r3$.ɵrS(15);
                 }
                 if (rf & 2) {
-                  $r3$.ɵt(0, $r3$.ɵi1('', $r3$.ɵpb2(1, $r3$.ɵpb2(2,ctx.name, ctx.size), ctx.size), ''));
-                  $r3$.ɵt(4, $r3$.ɵi1('', $r3$.ɵpb2(5, ctx.name, ctx.size), ''));
+                  $r3$.ɵt(0, $r3$.ɵi1('', $r3$.ɵpb2(1, 3, $r3$.ɵpb2(2, 6, ctx.name, ctx.size), ctx.size), ''));
+                  $r3$.ɵt(4, $r3$.ɵi1('', $r3$.ɵpbV(5, 13 , $r3$.ɵf1(15, $c0$, ctx.name)), ''));
                 }
               },
               pipes: [MyPurePipe, MyPipe]
@@ -954,8 +1144,7 @@ describe('compiler compliance', () => {
           factory: function MyComponent_Factory() { return new MyComponent(); },
           template: function MyComponent_Template(rf: IDENT, ctx: IDENT) {
             if (rf & 1) {
-              $r3$.ɵE(0, 'input', null, $c1$);
-              $r3$.ɵe();
+              $r3$.ɵEe(0, 'input', null, $c1$);
               $r3$.ɵT(2);
             }
             const $user$ = $r3$.ɵld(1);
@@ -1022,9 +1211,9 @@ describe('compiler compliance', () => {
             type: LifecycleComp,
             selectors: [['lifecycle-comp']],
             factory: function LifecycleComp_Factory() { return new LifecycleComp(); },
-            template: function LifecycleComp_Template(rf: IDENT, ctx: IDENT) {},
             inputs: {nameMin: 'name'},
-            features: [$r3$.ɵNgOnChangesFeature(LifecycleComp)]
+            features: [$r3$.ɵNgOnChangesFeature(LifecycleComp)],
+            template: function LifecycleComp_Template(rf: IDENT, ctx: IDENT) {}
           });`;
 
         const SimpleLayoutDefinition = `
@@ -1034,10 +1223,8 @@ describe('compiler compliance', () => {
             factory: function SimpleLayout_Factory() { return new SimpleLayout(); },
             template: function SimpleLayout_Template(rf: IDENT, ctx: IDENT) {
               if (rf & 1) {
-                $r3$.ɵE(0, 'lifecycle-comp');
-                $r3$.ɵe();
-                $r3$.ɵE(1, 'lifecycle-comp');
-                $r3$.ɵe();
+                $r3$.ɵEe(0, 'lifecycle-comp');
+                $r3$.ɵEe(1, 'lifecycle-comp');
               }
               if (rf & 2) {
                 $r3$.ɵp(0, 'name', $r3$.ɵb(ctx.name1));
@@ -1108,6 +1295,79 @@ describe('compiler compliance', () => {
           `
         }
       };
+
+      it('should support embedded views in the SVG namespace', () => {
+        const files = {
+          app: {
+            ...shared,
+            'spec.ts': `
+                  import {Component, NgModule} from '@angular/core';
+                  import {ForOfDirective} from './shared/for_of';
+
+                  @Component({
+                    selector: 'my-component',
+                    template: \`<svg><g *for="let item of items"><circle></circle></g></svg>\`
+                  })
+                  export class MyComponent {
+                    items = [{ data: 42 }, { data: 42 }];
+                  }
+
+                  @NgModule({
+                    declarations: [MyComponent, ForOfDirective]
+                  })
+                  export class MyModule {}
+                `
+          }
+        };
+
+        // TODO(benlesh): Enforce this when the directives are specified
+        const ForDirectiveDefinition = `
+              static ngDirectiveDef = $r3$.ɵdefineDirective({
+                type: ForOfDirective,
+                selectors: [['', 'forOf', '']],
+                factory: function ForOfDirective_Factory() {
+                  return new ForOfDirective($r3$.ɵinjectViewContainerRef(), $r3$.ɵinjectTemplateRef());
+                },
+                features: [$r3$.ɵNgOnChangesFeature(NgForOf)],
+                inputs: {forOf: 'forOf'}
+              });
+            `;
+
+        const MyComponentDefinition = `
+              const $_c0$ = ['for','','forOf',''];
+              …
+              static ngComponentDef = $r3$.ɵdefineComponent({
+                type: MyComponent,
+                selectors: [['my-component']],
+                factory: function MyComponent_Factory() { return new MyComponent(); },
+                template: function MyComponent_Template(rf:IDENT,ctx:IDENT){
+                  if (rf & 1) {
+                    $r3$.ɵNS();
+                    $r3$.ɵE(0,'svg');
+                    $r3$.ɵC(1,MyComponent__svg_g_Template_1,null,$_c0$);
+                    $r3$.ɵe();
+                  }
+                  if (rf & 2) { $r3$.ɵp(1,'forOf',$r3$.ɵb(ctx.items)); }
+                  function MyComponent__svg_g_Template_1(rf:IDENT,ctx0:IDENT) {
+                    if (rf & 1) {
+                      $r3$.ɵNS();
+                      $r3$.ɵE(0,'g');
+                      $r3$.ɵEe(1,'circle');
+                      $r3$.ɵe();
+                    }
+                  }
+                },
+                directives: [ForOfDirective]
+              });
+            `;
+
+        const result = compile(files, angularFiles);
+        const source = result.source;
+
+        // TODO(benlesh): Enforce this when the directives are specified
+        // expectEmit(source, ForDirectiveDefinition, 'Invalid directive definition');
+        expectEmit(source, MyComponentDefinition, 'Invalid component definition');
+      });
 
       it('should support a let variable and reference', () => {
         const files = {

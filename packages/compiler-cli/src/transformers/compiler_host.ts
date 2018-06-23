@@ -18,13 +18,13 @@ import {CompilerHost, CompilerOptions, LibrarySummary} from './api';
 import {MetadataReaderHost, createMetadataReaderCache, readMetadata} from './metadata_reader';
 import {DTS, GENERATED_FILES, isInRootDir, relativeToRootDirs} from './util';
 
-const NODE_MODULES_PACKAGE_NAME = /node_modules\/((\w|-)+|(@(\w|-)+\/(\w|-)+))/;
+const NODE_MODULES_PACKAGE_NAME = /node_modules\/((\w|-|\.)+|(@(\w|-|\.)+\/(\w|-|\.)+))/;
 const EXT = /(\.ts|\.d\.ts|\.js|\.jsx|\.tsx)$/;
 
 export function createCompilerHost(
     {options, tsHost = ts.createCompilerHost(options, true)}:
         {options: CompilerOptions, tsHost?: ts.CompilerHost}): CompilerHost {
-  if (options.enableIvy) {
+  if (options.enableIvy === 'ngtsc' || options.enableIvy === 'tsc') {
     return new NgtscCompilerHost(tsHost);
   }
   return tsHost;

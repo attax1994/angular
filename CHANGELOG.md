@@ -1,3 +1,168 @@
+<a name="6.1.0-beta.2"></a>
+# [6.1.0-beta.2](https://github.com/angular/angular/compare/6.1.0-beta.1...6.1.0-beta.2) (2018-06-20)
+
+
+### Bug Fixes
+
+* **compiler:** support `.` in import statements. ([#20634](https://github.com/angular/angular/issues/20634)) ([d8f7b29](https://github.com/angular/angular/commit/d8f7b29)), closes [#20363](https://github.com/angular/angular/issues/20363)
+* **core:** Injector correctly honors the @Self flag ([#24520](https://github.com/angular/angular/issues/24520)) ([ccbda9d](https://github.com/angular/angular/commit/ccbda9d))
+
+
+
+<a name="6.0.6"></a>
+## [6.0.6](https://github.com/angular/angular/compare/6.0.5...6.0.6) (2018-06-20)
+
+
+### Bug Fixes
+
+* **compiler:** support `.` in import statements. ([#20634](https://github.com/angular/angular/issues/20634)) ([e543c73](https://github.com/angular/angular/commit/e543c73)), closes [#20363](https://github.com/angular/angular/issues/20363)
+* **core:** Injector correctly honors the @Self flag ([#24520](https://github.com/angular/angular/issues/24520)) ([f5b3661](https://github.com/angular/angular/commit/f5b3661))
+
+
+
+<a name="6.0.5"></a>
+## [6.0.5](https://github.com/angular/angular/compare/6.0.4...6.0.5) (2018-06-13)
+
+
+<a name="6.1.0-beta.1"></a>
+# [6.1.0-beta.1](https://github.com/angular/angular/compare/6.1.0-beta.0...6.1.0-beta.1) (2018-06-13)
+
+
+### Bug Fixes
+
+* **animations:** always render end-state styles for orphaned DOM nodes ([#24236](https://github.com/angular/angular/issues/24236)) ([dc4a3d0](https://github.com/angular/angular/commit/dc4a3d0))
+* **bazel:** Allow ng_module to depend on targets w no deps ([#24446](https://github.com/angular/angular/issues/24446)) ([282d351](https://github.com/angular/angular/commit/282d351))
+* **docs-infra:** use script nomodule to load IE polyfills, skip other polyfills ([#24317](https://github.com/angular/angular/issues/24317)) ([8be6892](https://github.com/angular/angular/commit/8be6892)), closes [#23647](https://github.com/angular/angular/issues/23647)
+* **ivy:** compute transitive scopes from NgModuleDef only ([#24334](https://github.com/angular/angular/issues/24334)) ([1135563](https://github.com/angular/angular/commit/1135563))
+* **ivy:** correctly handle queries with embedded views ([#24418](https://github.com/angular/angular/issues/24418)) ([014949f](https://github.com/angular/angular/commit/014949f))
+* **ivy:** remove debugger statement ([#24480](https://github.com/angular/angular/issues/24480)) ([70ef061](https://github.com/angular/angular/commit/70ef061))
+* **ivy:** special case [style] and [class] bindings for future use ([#23232](https://github.com/angular/angular/issues/23232)) ([1b253e1](https://github.com/angular/angular/commit/1b253e1))
+* **router:** fix lazy loading of aux routes ([#23459](https://github.com/angular/angular/issues/23459)) ([5731d07](https://github.com/angular/angular/commit/5731d07)), closes [#10981](https://github.com/angular/angular/issues/10981)
+* **service-worker:** fix `SwPush.unsubscribe()` ([#24162](https://github.com/angular/angular/issues/24162)) ([3ed2d75](https://github.com/angular/angular/commit/3ed2d75)), closes [#24095](https://github.com/angular/angular/issues/24095)
+
+
+### Features
+
+* **common:** introduce KeyValuePipe ([#24319](https://github.com/angular/angular/issues/24319)) ([2b49bf7](https://github.com/angular/angular/commit/2b49bf7))
+* **core:** export defaultKeyValueDiffers to private api ([#24319](https://github.com/angular/angular/issues/24319)) ([92b278c](https://github.com/angular/angular/commit/92b278c))
+* **core:** expose a Compiler API for accessing module ids from NgModule types ([#24258](https://github.com/angular/angular/issues/24258)) ([bd02b27](https://github.com/angular/angular/commit/bd02b27))
+* **core:** KeyValueDiffer#diff allows null values ([#24319](https://github.com/angular/angular/issues/24319)) ([52ce9d5](https://github.com/angular/angular/commit/52ce9d5))
+* **ivy:** a generic visitor which allows prefixing nodes for ngtsc ([#24230](https://github.com/angular/angular/issues/24230)) ([ca79e11](https://github.com/angular/angular/commit/ca79e11))
+* **ivy:** add support of ApplicationRef.bootstrapModuleFactory ([#23811](https://github.com/angular/angular/issues/23811)) ([e3759f7](https://github.com/angular/angular/commit/e3759f7))
+* **ivy:** namespaced attributes added to output instructions ([#24386](https://github.com/angular/angular/issues/24386)) ([82c5313](https://github.com/angular/angular/commit/82c5313))
+* **ivy:** now supports SVG and MathML elements ([#24377](https://github.com/angular/angular/issues/24377)) ([8c1ac28](https://github.com/angular/angular/commit/8c1ac28))
+* **router:** implement scrolling restoration service ([#20030](https://github.com/angular/angular/issues/20030)) ([49c5234](https://github.com/angular/angular/commit/49c5234)), closes [#13636](https://github.com/angular/angular/issues/13636) [#10929](https://github.com/angular/angular/issues/10929) [#7791](https://github.com/angular/angular/issues/7791) [#6595](https://github.com/angular/angular/issues/6595)
+
+
+
+<a name="6.0.5"></a>
+## [6.0.5](https://github.com/angular/angular/compare/6.0.4...6.0.5) (2018-06-13)
+
+* **animations:** always render end-state styles for orphaned DOM nodes ([#24236](https://github.com/angular/angular/issues/24236)) ([0139173](https://github.com/angular/angular/commit/0139173))
+* **bazel:** Allow ng_module to depend on targets w no deps ([#24446](https://github.com/angular/angular/issues/24446)) ([ea3669e](https://github.com/angular/angular/commit/ea3669e))
+* **docs-infra:** use script nomodule to load IE polyfills, skip other polyfills ([#24317](https://github.com/angular/angular/issues/24317)) ([e876535](https://github.com/angular/angular/commit/e876535)), closes [#23647](https://github.com/angular/angular/issues/23647)
+* **router:** fix lazy loading of aux routes ([#23459](https://github.com/angular/angular/issues/23459)) ([d20877b](https://github.com/angular/angular/commit/d20877b)), closes [#10981](https://github.com/angular/angular/issues/10981)
+* **service-worker:** fix `SwPush.unsubscribe()` ([#24162](https://github.com/angular/angular/issues/24162)) ([ea2987c](https://github.com/angular/angular/commit/ea2987c)), closes [#24095](https://github.com/angular/angular/issues/24095)
+
+
+
+<a name="6.1.0-beta.0"></a>
+## [6.1.0-beta.0](https://github.com/angular/angular/compare/6.0.0-rc.5...6.1.0-beta.0) (2018-06-06)
+
+
+### Bug Fixes
+
+* **animations:** do not throw errors when a destroyed component is animated ([#23836](https://github.com/angular/angular/issues/23836)) ([d2a8687](https://github.com/angular/angular/commit/d2a8687))
+* **animations:** Fix browser detection logic ([#24188](https://github.com/angular/angular/issues/24188)) ([b492b9e](https://github.com/angular/angular/commit/b492b9e))
+* **animations:** properly clean up queried element styles in safari/edge ([#23633](https://github.com/angular/angular/issues/23633)) ([da9ff25](https://github.com/angular/angular/commit/da9ff25))
+* **animations:** retain state styling for nodes that are moved around ([#23534](https://github.com/angular/angular/issues/23534)) ([65211f4](https://github.com/angular/angular/commit/65211f4))
+* **animations:** retain trigger-state for nodes that are moved around ([#24238](https://github.com/angular/angular/issues/24238)) ([8db928d](https://github.com/angular/angular/commit/8db928d))
+* **benchpress:** Fix promise chain in chrome_driver_extension. ([#23458](https://github.com/angular/angular/issues/23458)) ([d4b6c41](https://github.com/angular/angular/commit/d4b6c41))
+* **compiler:** avoid a crash in ngc-wrapped. ([#23468](https://github.com/angular/angular/issues/23468)) ([e1c4930](https://github.com/angular/angular/commit/e1c4930))
+* **compiler:** generate constant array for i18n attributes ([#23837](https://github.com/angular/angular/issues/23837)) ([cfde36d](https://github.com/angular/angular/commit/cfde36d))
+* **compiler:** generate core-compliant hostBindings property ([#24087](https://github.com/angular/angular/issues/24087)) ([01b5acd](https://github.com/angular/angular/commit/01b5acd)), closes [#24013](https://github.com/angular/angular/issues/24013)
+* **compiler:** handle undefined annotation metadata ([#23349](https://github.com/angular/angular/issues/23349)) ([ca776c5](https://github.com/angular/angular/commit/ca776c5))
+* **compiler-cli:** don't rely on incompatible TS method ([#23550](https://github.com/angular/angular/issues/23550)) ([b1f040f](https://github.com/angular/angular/commit/b1f040f))
+* **core:** avoid eager providers re-initialization ([#23559](https://github.com/angular/angular/issues/23559)) ([0c6dc45](https://github.com/angular/angular/commit/0c6dc45))
+* **core:** call ngOnDestroy on all services that have it ([#23755](https://github.com/angular/angular/issues/23755)) ([fc03427](https://github.com/angular/angular/commit/fc03427)), closes [#22466](https://github.com/angular/angular/issues/22466) [#22240](https://github.com/angular/angular/issues/22240) [#14818](https://github.com/angular/angular/issues/14818)
+* **elements:** always check to create strategy ([#23825](https://github.com/angular/angular/issues/23825)) ([b1cda36](https://github.com/angular/angular/commit/b1cda36))
+* **elements:** prevent closure renaming of platform properties ([#23843](https://github.com/angular/angular/issues/23843)) ([d4b8b24](https://github.com/angular/angular/commit/d4b8b24))
+* **forms:** properly handle special properties in FormGroup.get ([#22249](https://github.com/angular/angular/issues/22249)) ([9367e91](https://github.com/angular/angular/commit/9367e91)), closes [#17195](https://github.com/angular/angular/issues/17195)
+* **platform-server:** avoid clash between server and client style encapsulation attributes ([#24158](https://github.com/angular/angular/issues/24158)) ([b96a3c8](https://github.com/angular/angular/commit/b96a3c8))
+* **platform-server:** avoid dependency cycle when using http interceptor ([#24229](https://github.com/angular/angular/issues/24229)) ([60aa943](https://github.com/angular/angular/commit/60aa943)), closes [#23023](https://github.com/angular/angular/issues/23023)
+* **platform-server:** don't reflect innerHTML property to attibute ([#24213](https://github.com/angular/angular/issues/24213)) ([6a663a4](https://github.com/angular/angular/commit/6a663a4)), closes [#19278](https://github.com/angular/angular/issues/19278)
+* **platform-server:** provide Domino DOM types globally ([#24116](https://github.com/angular/angular/issues/24116)) ([c73196e](https://github.com/angular/angular/commit/c73196e)), closes [#23280](https://github.com/angular/angular/issues/23280) [#23133](https://github.com/angular/angular/issues/23133)
+* **router:** avoid freezing queryParams in-place ([#22663](https://github.com/angular/angular/issues/22663)) ([89f64e5](https://github.com/angular/angular/commit/89f64e5)), closes [#22617](https://github.com/angular/angular/issues/22617)
+* **router:** cache route handle if found ([#22475](https://github.com/angular/angular/issues/22475)) ([4cfa571](https://github.com/angular/angular/commit/4cfa571)), closes [#22474](https://github.com/angular/angular/issues/22474)
+* **router:** correct the segment parsing so it won't break on ampersand ([#23684](https://github.com/angular/angular/issues/23684)) ([553a680](https://github.com/angular/angular/commit/553a680))
+* **service-worker:** add badge to NOTIFICATION_OPTION_NAMES ([#23241](https://github.com/angular/angular/issues/23241)) ([fb59b2d](https://github.com/angular/angular/commit/fb59b2d)), closes [#23196](https://github.com/angular/angular/issues/23196)
+* **service-worker:** check platformBrowser before accessing navigator.serviceWorker ([#21231](https://github.com/angular/angular/issues/21231)) ([0bdd30e](https://github.com/angular/angular/commit/0bdd30e))
+* **service-worker:** correctly handle requests with empty `clientId` ([#23625](https://github.com/angular/angular/issues/23625)) ([e0ed59e](https://github.com/angular/angular/commit/e0ed59e)), closes [#23526](https://github.com/angular/angular/issues/23526)
+* **service-worker:** deprecate `versionedFiles` in asset-group resources ([#23584](https://github.com/angular/angular/issues/23584)) ([1d378e2](https://github.com/angular/angular/commit/1d378e2))
+
+
+### Features
+
+* **compiler:** support `// ...` and `// TODO` in mock compiler expectations ([#23441](https://github.com/angular/angular/issues/23441)) ([c6b206e](https://github.com/angular/angular/commit/c6b206e))
+* **compiler-cli:** update `tsickle` to `0.29.x` ([#24233](https://github.com/angular/angular/issues/24233)) ([f69ac67](https://github.com/angular/angular/commit/f69ac67))
+* **platform-browser:** add HammerJS lazy-loader symbols to public API ([#23943](https://github.com/angular/angular/issues/23943)) ([26fbf1d](https://github.com/angular/angular/commit/26fbf1d))
+* **platform-browser:** allow lazy-loading HammerJS ([#23906](https://github.com/angular/angular/issues/23906)) ([313bdce](https://github.com/angular/angular/commit/313bdce))
+* **platform-server:** use EventManagerPlugin on the server ([#24132](https://github.com/angular/angular/issues/24132)) ([d6595eb](https://github.com/angular/angular/commit/d6595eb))
+* **router:** add navigation execution context info to activation hooks ([#24204](https://github.com/angular/angular/issues/24204)) ([20c463e](https://github.com/angular/angular/commit/20c463e)), closes [#24202](https://github.com/angular/angular/issues/24202)
+
+
+<a name="6.0.4"></a>
+## [6.0.4](https://github.com/angular/angular/compare/6.0.3...6.0.4) (2018-06-06)
+
+
+### Bug Fixes
+
+* **animations:** Fix browser detection logic ([#24188](https://github.com/angular/angular/issues/24188)) ([c9eb491](https://github.com/angular/angular/commit/c9eb491))
+* **animations:** retain trigger-state for nodes that are moved around ([#24238](https://github.com/angular/angular/issues/24238)) ([19deca1](https://github.com/angular/angular/commit/19deca1))
+* **forms:** properly handle special properties in FormGroup.get ([#22249](https://github.com/angular/angular/issues/22249)) ([dc3e8aa](https://github.com/angular/angular/commit/dc3e8aa)), closes [#17195](https://github.com/angular/angular/issues/17195)
+* **platform-server:** avoid clash between server and client style encapsulation attributes ([#24158](https://github.com/angular/angular/issues/24158)) ([e9f2203](https://github.com/angular/angular/commit/e9f2203))
+* **platform-server:** avoid dependency cycle when using http interceptor ([#24229](https://github.com/angular/angular/issues/24229)) ([2991b1b](https://github.com/angular/angular/commit/2991b1b)), closes [#23023](https://github.com/angular/angular/issues/23023)
+* **platform-server:** don't reflect innerHTML property to attibute ([#24213](https://github.com/angular/angular/issues/24213)) ([c17098d](https://github.com/angular/angular/commit/c17098d)), closes [#19278](https://github.com/angular/angular/issues/19278)
+* **platform-server:** provide Domino DOM types globally ([#24116](https://github.com/angular/angular/issues/24116)) ([906b3ec](https://github.com/angular/angular/commit/906b3ec)), closes [#23280](https://github.com/angular/angular/issues/23280) [#23133](https://github.com/angular/angular/issues/23133)
+
+
+<a name="6.0.3"></a>
+## [6.0.3](https://github.com/angular/angular/compare/6.0.2...6.0.3) (2018-05-22)
+
+
+### Bug Fixes
+
+* **service-worker:** check platformBrowser before accessing navigator.serviceWorker ([#21231](https://github.com/angular/angular/issues/21231)) ([0ee5b7e](https://github.com/angular/angular/commit/0ee5b7e))
+
+
+
+<a name="6.0.2"></a>
+## [6.0.2](https://github.com/angular/angular/compare/6.0.1...6.0.2) (2018-05-15)
+
+
+### Bug Fixes
+
+* **animations:** do not throw errors when a destroyed component is animated ([#23836](https://github.com/angular/angular/issues/23836)) ([752b83a](https://github.com/angular/angular/commit/752b83a))
+* **service-worker:** deprecate `versionedFiles` in asset-group resources ([#23584](https://github.com/angular/angular/issues/23584)) ([c6b618d](https://github.com/angular/angular/commit/c6b618d))
+
+
+
+<a name="6.0.1"></a>
+# [6.0.1](https://github.com/angular/angular/compare/6.0.0...6.0.1) (2018-05-11)
+
+
+### Bug Fixes
+
+* **animations:** properly clean up queried element styles in safari/edge ([#23686](https://github.com/angular/angular/issues/23686)) ([3824e3f](https://github.com/angular/angular/commit/3824e3f))
+* **animations:** retain state styling for nodes that are moved around ([#23686](https://github.com/angular/angular/issues/23686)) ([05aa5e0](https://github.com/angular/angular/commit/05aa5e0))
+* **core:** call ngOnDestroy on all services that have it ([#23755](https://github.com/angular/angular/issues/23755)) ([5581e97](https://github.com/angular/angular/commit/5581e97)), closes [#22466](https://github.com/angular/angular/issues/22466) [#22240](https://github.com/angular/angular/issues/22240) [#14818](https://github.com/angular/angular/issues/14818)
+* **elements:** always check to create strategy ([#23825](https://github.com/angular/angular/issues/23825)) ([d280077](https://github.com/angular/angular/commit/d280077))
+* **router:** avoid freezing queryParams in-place ([#22663](https://github.com/angular/angular/issues/22663)) ([3d8799b](https://github.com/angular/angular/commit/3d8799b)), closes [#22617](https://github.com/angular/angular/issues/22617)
+* **router:** correct the segment parsing so it won't break on ampersand ([#23684](https://github.com/angular/angular/issues/23684)) ([8733843](https://github.com/angular/angular/commit/8733843))
+* **service-worker:** correctly handle requests with empty `clientId` ([#23625](https://github.com/angular/angular/issues/23625)) ([2254ac2](https://github.com/angular/angular/commit/2254ac2)), closes [#23526](https://github.com/angular/angular/issues/23526)
+
+
+
 <a name="6.0.0"></a>
 # [6.0.0](https://github.com/angular/angular/compare/6.0.0-beta.0...6.0.0) (2018-05-03)
 
@@ -5,7 +170,7 @@
 
 Angular v6 is the first release of Angular that unifies the Framework, Material and CLI.
 
-To learn about the release highlights and our new CLI-powered update workflow for your projects please check out the [v6 release announcement](https://blog.angular.io/version-6-0-0-of-angular-now-available-cc56b0efa7a4). 
+To learn about the release highlights and our new CLI-powered update workflow for your projects please check out the [v6 release announcement](https://blog.angular.io/version-6-0-0-of-angular-now-available-cc56b0efa7a4).
 
 
 
@@ -156,10 +321,10 @@ To learn about the release highlights and our new CLI-powered update workflow fo
   This change removes support for `<template>`. `<ng-template>` should be used instead.
 
   BEFORE:
-  
+
       <!-- html template -->
       <template>some template content</template>
-  
+
       # tsconfig.json
       {
         # ...
@@ -169,12 +334,12 @@ To learn about the release highlights and our new CLI-powered update workflow fo
           "enableLegacyTemplate": [true|false]
         }
       }
-  
+
   AFTER:
-  
+
       <!-- html template -->
       <ng-template>some template content</ng-template>
-      
+
 * **core:** it is no longer possible to import animation-related functions from @angular/core. All animation symbols must now be imported from @angular/animations.
 
 
@@ -187,35 +352,35 @@ To learn about the release highlights and our new CLI-powered update workflow fo
 
   Previously, ngModelChange was emitted before its underlying control was updated.
   This was fine if you passed through the value directly through the $event keyword, e.g.
-  
+
   ```
   <input [(ngModel)]="name" (ngModelChange)="onChange($event)">
-  
+
   onChange(value) {
      console.log(value);               // would log updated value
   }
   ```
-  
+
   However, if you had a handler for the ngModelChange event that checked the value through the control,
   you would get the old value rather than the updated value. e.g:
-  
+
   ```
   <input #modelDir="ngModel" [(ngModel)]="name" (ngModelChange)="onChange(modelDir)">
-  
+
   onChange(ngModel: NgModel) {
     console.log(ngModel.value);        // would log old value, not updated value
   }
   ```
-  
+
   Now the value and validity will be updated before the ngModelChange event is emitted,
   so the same setup will log the updated value.
-  
+
   ```
   onChange(ngModel: NgModel) {
      console.log(ngModel.value);       // will log updated value
   }
   ```
-  
+
   We think this order will be less confusing when the control is checked directly.
   You will only need to update your app if it has relied on this bug to keep track of the old control value.
   If that is the case, you should be able to track the old value directly by saving it on your component.

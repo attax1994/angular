@@ -12,8 +12,10 @@ import * as ts from 'typescript';
 
 import * as api from '../transformers/api';
 
+import {ComponentDecoratorHandler, DirectiveDecoratorHandler, InjectableDecoratorHandler, NgModuleDecoratorHandler, SelectorScopeRegistry} from './annotations';
 import {CompilerHost} from './compiler_host';
-import {InjectableCompilerAdapter, IvyCompilation, ivyTransformFactory} from './transform';
+import {TypeScriptReflectionHost} from './metadata';
+import {IvyCompilation, ivyTransformFactory} from './transform';
 
 export class NgtscProgram implements api.Program {
   private tsProgram: ts.Program;
@@ -89,10 +91,17 @@ export class NgtscProgram implements api.Program {
     const mergeEmitResultsCallback = opts && opts.mergeEmitResultsCallback || mergeEmitResults;
 
     const checker = this.tsProgram.getTypeChecker();
+    const reflector = new TypeScriptReflectionHost(checker);
+    const scopeRegistry = new SelectorScopeRegistry(checker, reflector);
 
     // Set up the IvyCompilation, which manages state for the Ivy transformer.
-    const adapters = [new InjectableCompilerAdapter(checker)];
-    const compilation = new IvyCompilation(adapters, checker);
+    const handlers = [
+      new ComponentDecoratorHandler(checker, reflector, scopeRegistry),
+      new DirectiveDecoratorHandler(checker, reflector, scopeRegistry),
+      new InjectableDecoratorHandler(reflector),
+      new NgModuleDecoratorHandler(checker, scopeRegistry),
+    ];
+    const compilation = new IvyCompilation(handlers, checker, reflector);
 
     // Analyze every source file in the program.
     this.tsProgram.getSourceFiles()

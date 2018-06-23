@@ -19,6 +19,11 @@ export type ComponentTemplate<T> = {
 };
 
 /**
+ * Definition of what a query function should look like.
+ */
+export type ComponentQuery<T> = ComponentTemplate<T>;
+
+/**
  * Flags passed into template functions to determine which blocks (i.e. creation, update)
  * should be executed.
  *
@@ -55,6 +60,12 @@ export const enum DirectiveDefFlags {ContentQuery = 0b10}
 export interface PipeType<T> extends Type<T> { ngPipeDef: never; }
 
 /**
+ * A version of {@link DirectiveDef} that represents the runtime type shape only, and excludes
+ * metadata parameters.
+ */
+export type DirectiveDefInternal<T> = DirectiveDef<T, string>;
+
+/**
  * Runtime link information for Directives.
  *
  * This is internal data structure used by the render to link
@@ -64,14 +75,16 @@ export interface PipeType<T> extends Type<T> { ngPipeDef: never; }
  * never create the object directly since the shape of this object
  * can change between versions.
  *
+ * @param Selector type metadata specifying the selector of the directive or component
+ *
  * See: {@link defineDirective}
  */
-export interface DirectiveDef<T> {
+export interface DirectiveDef<T, Selector extends string> {
   /** Token representing the directive. Used by DI. */
   type: Type<T>;
 
   /** Function that makes a directive public to the DI system. */
-  diPublic: ((def: DirectiveDef<any>) => void)|null;
+  diPublic: ((def: DirectiveDef<any, string>) => void)|null;
 
   /** The selectors that will be used to match nodes to this directive. */
   selectors: CssSelectorList;
@@ -125,6 +138,12 @@ export interface DirectiveDef<T> {
 }
 
 /**
+ * A version of {@link ComponentDef} that represents the runtime type shape only, and excludes
+ * metadata parameters.
+ */
+export type ComponentDefInternal<T> = ComponentDef<T, string>;
+
+/**
  * Runtime link information for Components.
  *
  * This is internal data structure used by the render to link
@@ -136,18 +155,19 @@ export interface DirectiveDef<T> {
  *
  * See: {@link defineComponent}
  */
-export interface ComponentDef<T> extends DirectiveDef<T> {
+export interface ComponentDef<T, Selector extends string> extends DirectiveDef<T, Selector> {
   /**
    * The View template of the component.
-   *
-   * NOTE: only used with component directives.
    */
   readonly template: ComponentTemplate<T>;
 
   /**
+   * Query-related instructions for a component.
+   */
+  readonly viewQuery: ComponentQuery<T>|null;
+
+  /**
    * Renderer type data of the component.
-   *
-   * NOTE: only used with component directives.
    */
   readonly rendererType: RendererType2|null;
 
@@ -204,12 +224,9 @@ export interface PipeDef<T> {
   name: string;
 
   /**
-   * factory function used to create a new directive instance.
-   *
-   * NOTE: this property is short (1 char) because it is used in
-   * component templates which is sensitive to size.
+   * Factory function used to create a new pipe instance.
    */
-  n: () => T;
+  factory: () => T;
 
   /**
    * Whether or not the pipe is pure.
@@ -223,8 +240,8 @@ export interface PipeDef<T> {
   onDestroy: (() => void)|null;
 }
 
-export type DirectiveDefFeature = <T>(directiveDef: DirectiveDef<T>) => void;
-export type ComponentDefFeature = <T>(componentDef: ComponentDef<T>) => void;
+export type DirectiveDefFeature = <T>(directiveDef: DirectiveDef<T, string>) => void;
+export type ComponentDefFeature = <T>(componentDef: ComponentDef<T, string>) => void;
 
 /**
  * Type used for directiveDefs on component definition.
@@ -233,12 +250,12 @@ export type ComponentDefFeature = <T>(componentDef: ComponentDef<T>) => void;
  */
 export type DirectiveDefListOrFactory = (() => DirectiveDefList) | DirectiveDefList;
 
-export type DirectiveDefList = (DirectiveDef<any>| ComponentDef<any>)[];
+export type DirectiveDefList = (DirectiveDef<any, string>| ComponentDef<any, string>)[];
 
 export type DirectiveTypesOrFactory = (() => DirectiveTypeList) | DirectiveTypeList;
 
 export type DirectiveTypeList =
-    (DirectiveDef<any>| ComponentDef<any>|
+    (DirectiveDef<any, string>| ComponentDef<any, string>|
      Type<any>/* Type as workaround for: Microsoft/TypeScript/issues/4881 */)[];
 
 /**
